@@ -1,0 +1,71 @@
+project:
+  packs:
+    - pack: ARM::CMSIS@^6.1.0
+    - pack: Keil::STM32F1xx_DFP@^2.4.1
+    - pack: ARM::CMSIS-NN@^4.0.0
+    - pack: ARM::CMSIS-DSP@^1.10.1
+  setups:
+    - setup: Options for sdk
+      debug: "on"
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fshort-enums
+            - -fshort-wchar
+            - -ffunction-sections
+            - -Wall
+            - -Wextra
+            - -Wno-packed
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+  linker:
+    - script: sdk2025_sdk.sct
+  groups:
+    - group: Source
+      files:
+        - file: main.c
+        - file: usart.c
+        - file: i2c.c
+        - file: BME280.c
+        - file: Satelite.c
+    - group: User library
+      files:
+        - file: interrupts.h
+        - file: usart.h
+        - file: i2c.h
+        - file: BME280.h
+    - group: system library
+      files:
+        - file: systickdelay.c
+        - file: systickdelay.h
+        - file: delay.c
+        - file: delay.h
+  components:
+    - component: ARM::CMSIS:CORE
+    - component: Keil::Device:Startup
